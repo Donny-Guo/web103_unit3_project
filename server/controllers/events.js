@@ -6,7 +6,7 @@ const getEventById = async (req, res) => {
     const selectQuery = 
       `
       SELECT * FROM events
-      WHERE event_id = $1
+      WHERE id = $1
       `
     const results = await pool.query(selectQuery, [event_id])
     console.log(`🎉 Successfully fetched event with id ${event_id}`)
@@ -21,7 +21,7 @@ const getEventById = async (req, res) => {
 const getAllEvents = async (req, res) => {
   try {
     const results = await pool.query(
-      `SELECT * FROM events ORDER BY event_id;`
+      `SELECT * FROM events ORDER BY id;`
     )
     console.log('🎉 Successfully fetched all data from events table')
     res.status(200).json(results.rows)
@@ -37,7 +37,7 @@ const getEventsByLocation = async (req, res) => {
     const selectQuery = 
       `
       SELECT * FROM events
-      WHERE event_location = $1
+      WHERE location_name = $1
       `
     const results = await pool.query(selectQuery, [location])
     console.log(`🎉 Successfully fetched all events at location ${location}`)
@@ -48,9 +48,23 @@ const getEventsByLocation = async (req, res) => {
   }
 }
 
+const getAllLocations = async (req, res) => {
+  try {
+    const results = await pool.query(
+      `SELECT UNIQUE location_name FROM events;`
+    )
+    console.log('🎉 Successfully fetched all locations from events table')
+    res.status(200).json(results.rows)
+  } catch (error) {
+    console.error('⚠️ error getting all locations from events table', error);
+    res.status(409).json({ error: error.message })
+  }
+}
+
 
 export default {
   getEventById,
   getAllEvents,
-  getEventsByLocation
+  getEventsByLocation,
+  getAllLocations
 }
