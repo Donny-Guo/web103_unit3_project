@@ -3,7 +3,7 @@ import { pool } from "../config/database.js";
 const getEventById = async (req, res) => {
   try {
     const event_id = req.params.eventId;
-    const selectQuery = 
+    const selectQuery =
       `
       SELECT * FROM events
       WHERE id = $1
@@ -27,17 +27,18 @@ const getAllEvents = async (req, res) => {
     res.status(200).json(results.rows)
   } catch (error) {
     console.error('⚠️ error getting data from events table', error);
-    res.status(409).json({error: error.message})
+    res.status(409).json({ error: error.message })
   }
 }
 
 const getEventsByLocation = async (req, res) => {
   try {
     const location = req.params.location;
-    const selectQuery = 
+    const selectQuery =
       `
       SELECT * FROM events
       WHERE location_name = $1
+      ORDER BY date;
       `
     const results = await pool.query(selectQuery, [location])
     console.log(`🎉 Successfully fetched all events at location ${location}`)
@@ -51,7 +52,7 @@ const getEventsByLocation = async (req, res) => {
 const getAllLocations = async (req, res) => {
   try {
     const results = await pool.query(
-      `SELECT UNIQUE location_name FROM events;`
+      `SELECT DISTINCT location_name, location, address, img_link FROM events;`
     )
     console.log('🎉 Successfully fetched all locations from events table')
     res.status(200).json(results.rows)

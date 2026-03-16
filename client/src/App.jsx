@@ -37,11 +37,11 @@ const App = () => {
     <div className='app'>
 
       <header className='main-header'>
-        <h1>UnityGrid Plaza</h1>
+        <h1>Music Plaza</h1>
 
         <div className='header-buttons'>
           <Link to='/' role='button'>Home</Link>
-          <Link to='/events' role='button'>Events</Link>
+          {/* <Link to='/events' role='button'>Events</Link> */}
         </div>
       </header>
 

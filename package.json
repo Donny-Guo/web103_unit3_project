@@ -3,8 +3,8 @@
   "type": "module",
   "scripts": {
     "reset": "cd server && node -r dotenv/config config/reset.js",
-    "dev": "concurrently \"cd client && vite\" \"cd server && nodemon server\"",
-    "start": "cd server && node server",
+    "dev": "npm run reset && concurrently \"cd client && vite\" \"cd server && nodemon server.js\"",
+    "start": "npm run reset && cd server && node -r dotenv/config server.js",
     "build": "cd client && vite build"
   },
   "dependencies": {
